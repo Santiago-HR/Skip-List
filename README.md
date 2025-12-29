@@ -1,4 +1,3 @@
-# Skip-List
 SkipListSet (Skip List Implementation in Java)
 
 This repository contains a generic Java implementation of a Skip List, exposed as a SkipListSet<T> that implements Java’s SortedSet<T> interface.
