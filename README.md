@@ -1,46 +1,46 @@
-SkipListSet
-Skip List Implementation in Java
+SkipListSet (Skip List Implementation in Java)
 
 This repository contains a generic Java implementation of a Skip List, exposed as SkipListSet<T> that implements Java’s SortedSet<T> interface.
 
-A skip list is a probabilistic, self-balancing data structure that maintains elements in sorted order while providing expected O(log n) time complexity for insertion, search, and deletion—similar to balanced binary search trees, but often simpler to implement.
+A skip list is a probabilistic, self-balancing data structure that maintains elements in sorted order and provides expected O(log n) time complexity for insertion, search, and deletion—comparable to balanced binary search trees, but often simpler to implement.
 
-📁 Repository Contents
-.
-└── SkipListSet.java   # Generic skip list implementation
+Features
 
-✨ Features
+Fully generic (T extends Comparable<T>)
 
-Fully generic — supports any type T that implements Comparable<T>
+Implements the complete SortedSet<T> interface
 
-Implements the full SortedSet<T> interface
+Expected O(log n) time complexity for:
 
-Expected O(log n) performance for:
+Insert
 
-add
+Search
 
-remove
+Delete
 
-contains
+Randomized node heights (probability = 0.5)
 
-Uses randomized node heights (probability = 0.5)
-
-Supports:
-
-Forward pointers at multiple levels
+Multi-level forward pointers
 
 Backward pointer at level 0
 
-Includes a reBalance() method to re-randomize node heights
+Optional reBalance() method for re-randomizing node heights
 
-Compatible with Java enhanced-for (for-each) loops
+Supports Java enhanced-for (for-each) iteration
 
-🧠 Design Overview
-Skip List Structure
+Repository Contents
+.
+└── SkipListSet.java   # Generic skip list implementation
 
-Each element is wrapped in an internal node class (SkipListSetItem).
+Requirements
+Java 8 or newer
 
-Each node stores:
+
+No external libraries are required.
+
+Design Overview
+
+Each element is stored in an internal node (SkipListSetItem) containing:
 
 A payload value
 
@@ -48,35 +48,18 @@ A list of forward pointers (one per level)
 
 A backward pointer at level 0
 
-A head sentinel node spans the maximum allowed height.
+A sentinel head node spans the maximum height of the skip list.
+Node heights are generated randomly using a geometric distribution.
 
-Node heights are randomly generated using a geometric distribution.
-
-Key Parameters
+Configuration Parameters
 
 Maximum level: 32
 
-Probability: 0.5
+Probability factor: 0.5
 
 Ordering: Natural ordering (Comparable<T>)
 
-🔌 Interfaces Implemented
-
-The class is designed to behave exactly like a standard Java sorted collection.
-
-Implemented Interfaces
-
-SortedSet<T>
-
-Set<T>
-
-Collection<T>
-
-Iterable<T>
-
-This means a SkipListSet can be used anywhere a SortedSet is expected.
-
-🛠 Supported Operations
+Supported Operations
 SortedSet Methods
 
 add, addAll
@@ -95,9 +78,9 @@ iterator
 
 comparator (returns null for natural ordering)
 
-❌ Unsupported Operations
+Unsupported Methods
 
-The following methods are intentionally not implemented and will throw UnsupportedOperationException:
+The following methods are intentionally not implemented and throw UnsupportedOperationException:
 
 headSet
 
@@ -105,77 +88,63 @@ subSet
 
 tailSet
 
-🔁 Iterator Support
+Iterator Behavior
 
-The internal SkipListSetIterator:
+The internal iterator:
 
-Iterates over elements in sorted order
+Traverses elements in sorted order
 
-Returns payload values, not internal nodes
+Returns element values (not internal nodes)
 
 Supports hasNext() and next()
 
-Does not support remove() (throws exception)
+Does not support remove()
 
 Example Usage
 for (Integer x : skipList) {
     System.out.println(x);
 }
 
-🔄 Rebalancing
-Method Signature
+Rebalancing
+Method
 public void reBalance()
 
 Behavior
+1. Collect all elements
+2. Clear the skip list
+3. Reinsert elements with newly randomized heights
 
-Collects all elements
 
-Clears the skip list
+This method is not invoked automatically and is intended for optional performance tuning.
 
-Re-inserts elements with newly randomized heights
+Testing Notes
 
-⚠️ This method is not called automatically and is intended for optional performance tuning.
-
-⚙️ Requirements
-
-Java 8 or newer
-
-No external dependencies
-
-🧪 Testing Notes
-
-This class does not include a main() method
+No main() method is included
 
 Intended to be tested using:
 
 A separate driver program, or
 
-An external test harness
+An external testing framework
 
-Designed to handle large-scale workloads (millions of elements)
+Designed to handle large workloads (millions of elements)
 
-🚫 Restrictions
+Notes & Restrictions
 
 Does not use Java’s built-in ConcurrentSkipListSet
 
-Uses basic Java collections internally where appropriate
-
 Not thread-safe
 
-📚 Background
+Uses only standard Java collections internally
 
-This implementation was originally developed as part of a Data Structures (CS II) programming assignment, with the goals of:
+Performance varies based on JVM and hardware
+
+Background
+
+This implementation was developed as part of a Data Structures (CS II) assignment with the goals of:
 
 Understanding probabilistic balancing
 
 Implementing Java collection interfaces
 
-Designing efficient, scalable data structures from scratch
-
-If you want, I can also:
-
-Add badges (Java version, license, etc.)
-
-Create a Usage or Performance Analysis section
-
-Generate a Javadoc-style summary for the class
+Building scalable data structures from scratch
