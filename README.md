@@ -1,8 +1,9 @@
-SkipListSet (Skip List Implementation in Java)
+SkipListSet
+Skip List Implementation in Java
 
-This repository contains a generic Java implementation of a Skip List, exposed as a SkipListSet<T> that implements Java’s SortedSet<T> interface.
+This repository contains a generic Java implementation of a Skip List, exposed as SkipListSet<T> that implements Java’s SortedSet<T> interface.
 
-A skip list is a probabilistic, self-balancing data structure that maintains elements in sorted order while providing expected O(log n) time complexity for insertion, search, and deletion—similar in performance to balanced binary search trees, but often simpler to implement.
+A skip list is a probabilistic, self-balancing data structure that maintains elements in sorted order while providing expected O(log n) time complexity for insertion, search, and deletion—similar to balanced binary search trees, but often simpler to implement.
 
 📁 Repository Contents
 .
@@ -10,7 +11,7 @@ A skip list is a probabilistic, self-balancing data structure that maintains ele
 
 ✨ Features
 
-Fully generic: supports any type T that implements Comparable<T>
+Fully generic — supports any type T that implements Comparable<T>
 
 Implements the full SortedSet<T> interface
 
@@ -37,9 +38,9 @@ Compatible with Java enhanced-for (for-each) loops
 🧠 Design Overview
 Skip List Structure
 
-Each element is wrapped in an internal node class (SkipListSetItem)
+Each element is wrapped in an internal node class (SkipListSetItem).
 
-Nodes store:
+Each node stores:
 
 A payload value
 
@@ -47,9 +48,9 @@ A list of forward pointers (one per level)
 
 A backward pointer at level 0
 
-A head sentinel node spans the maximum allowed height
+A head sentinel node spans the maximum allowed height.
 
-Node heights are randomly generated using a geometric distribution
+Node heights are randomly generated using a geometric distribution.
 
 Key Parameters
 
@@ -94,7 +95,7 @@ iterator
 
 comparator (returns null for natural ordering)
 
-Unsupported Operations
+❌ Unsupported Operations
 
 The following methods are intentionally not implemented and will throw UnsupportedOperationException:
 
@@ -116,15 +117,16 @@ Supports hasNext() and next()
 
 Does not support remove() (throws exception)
 
-This allows seamless use with enhanced-for loops:
-
+Example Usage
 for (Integer x : skipList) {
     System.out.println(x);
 }
 
 🔄 Rebalancing
+Method Signature
 public void reBalance()
 
+Behavior
 
 Collects all elements
 
@@ -132,7 +134,7 @@ Clears the skip list
 
 Re-inserts elements with newly randomized heights
 
-This method is not called automatically and is intended for optional performance tuning.
+⚠️ This method is not called automatically and is intended for optional performance tuning.
 
 ⚙️ Requirements
 
@@ -162,10 +164,18 @@ Not thread-safe
 
 📚 Background
 
-This implementation was originally developed as part of a Data Structures (CS II) programming assignment, with the goal of:
+This implementation was originally developed as part of a Data Structures (CS II) programming assignment, with the goals of:
 
 Understanding probabilistic balancing
 
 Implementing Java collection interfaces
 
 Designing efficient, scalable data structures from scratch
+
+If you want, I can also:
+
+Add badges (Java version, license, etc.)
+
+Create a Usage or Performance Analysis section
+
+Generate a Javadoc-style summary for the class
