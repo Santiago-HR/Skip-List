@@ -1,5 +1,6 @@
 // SkipListSet.java
 
+import java.util.AbstractSet;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
@@ -9,7 +10,13 @@ import java.util.NoSuchElementException;
 import java.util.Random;
 import java.util.SortedSet;
 
-public class SkipListSet<T extends Comparable<T>> implements SortedSet<T> {
+// BUG FIX: extends AbstractSet<T> instead of implementing SortedSet<T> directly.
+// AbstractSet provides correct equals() and hashCode() implementations that satisfy
+// the Set contract (equality by contents, hashCode = sum of element hashCodes).
+// Without this, equals() fell back to Object.equals() (identity comparison),
+// meaning two SkipListSets with identical contents were never equal to each other
+// or to a TreeSet, violating the SortedSet/Set interface contract.
+public class SkipListSet<T extends Comparable<T>> extends AbstractSet<T> implements SortedSet<T> {
 
     private static final double PROBABILITY = 0.5;
     private static final int MAX_LEVEL = 32; // Maximum number of levels
@@ -107,6 +114,7 @@ public class SkipListSet<T extends Comparable<T>> implements SortedSet<T> {
 
     // Check if value exists
     @Override
+    @SuppressWarnings("unchecked")
     public boolean contains(Object o) {
         if (o == null) return false;
 
@@ -132,6 +140,7 @@ public class SkipListSet<T extends Comparable<T>> implements SortedSet<T> {
 
     // Remove a value
     @Override
+    @SuppressWarnings("unchecked")
     public boolean remove(Object o) {
         if (o == null) return false;
 
@@ -311,27 +320,26 @@ public class SkipListSet<T extends Comparable<T>> implements SortedSet<T> {
 
     @Override
     public Comparator<? super T> comparator() {
-        return null;
+        return null; // Natural ordering
     }
 
+    // Re-randomize all node heights for performance tuning
     public void reBalance() {
         List<T> elements = new ArrayList<>();
         for (T elem : this) {
             elements.add(elem);
         }
-
         clear();
-
         for (T elem : elements) {
             add(elem);
         }
     }
 
-    // Node class
+    // ── Internal node class ──────────────────────────────────────────────────
     private class SkipListSetItem {
         T value;
-        List<SkipListSetItem> forward;
-        SkipListSetItem backward;
+        List<SkipListSetItem> forward;  // Forward pointers, one per level
+        SkipListSetItem backward;        // Backward pointer at level 0 only
 
         SkipListSetItem(T value, int level) {
             this.value = value;
@@ -342,7 +350,7 @@ public class SkipListSet<T extends Comparable<T>> implements SortedSet<T> {
         }
     }
 
-    // Iterator class
+    // ── Iterator class ───────────────────────────────────────────────────────
     private class SkipListSetIterator implements Iterator<T> {
         private SkipListSetItem current = head.forward.get(0);
 
@@ -361,7 +369,7 @@ public class SkipListSet<T extends Comparable<T>> implements SortedSet<T> {
 
         @Override
         public void remove() {
-            throw new UnsupportedOperationException("Remove not supported");
+            throw new UnsupportedOperationException("Remove not supported by this iterator");
         }
     }
 }
